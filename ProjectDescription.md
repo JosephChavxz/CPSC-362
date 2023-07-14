@@ -1,5 +1,3 @@
-@@ -1,22 +1,12 @@
-Project Description
 Project Description 
 
 In this project, you will develop an automated trading system that is designed to trade only two Exchange-Traded Funds (ETFs): FNGU and FNGD. 
