@@ -14,7 +14,7 @@ class StockData:
 
         if symbol:
             self.set_symbol(symbol)
-            self.retrieveData()
+            self.pullData()
 
     def __str__(self):
         output = ""
@@ -23,7 +23,7 @@ class StockData:
 
         return output
 
-    def retrieveData(self):
+    def pullData(self):
         """
         :return:
         """
@@ -73,7 +73,7 @@ class StockData:
         """
 
         self.set_symbol(symbol)
-        self.retrieveData()
+        self.pullData()
         return self.return_data()
 
 
