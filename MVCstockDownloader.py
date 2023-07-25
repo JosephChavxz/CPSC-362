@@ -45,12 +45,29 @@ if __name__ == "__main__":
     stock_data2 = stock_downloader.get_stock_data()
 
     print('Data successfully downloaded!\n')
-    print('Printing Downloaded Stock Data...')
+    print('Printing Downloaded Stock Data for FNGU...')
     for index, row in stock_data1.iterrows():
-        # ... (print stock_data1 as needed)
+        date = index.strftime('%Y-%m-%d')
+        open_price = row['Open']
+        high_price = row['High']
+        low_price = row['Low']
+        close_price = row['Close']
+        volume = row['Volume']
+        print(
+            f"{fngu_symbol} - On {date}: Open: {open_price:.2f}, High: {high_price:.2f}, Low: {low_price:.2f}, Close: {close_price:.2f}, Volume: {volume}")
+
     print()
+    print('Printing Downloaded Stock Data for FNGD...')
     for index, row in stock_data2.iterrows():
-        # ... (print stock_data2 as needed)
+        date = index.strftime('%Y-%m-%d')
+        open_price = row['Open']
+        high_price = row['High']
+        low_price = row['Low']
+        close_price = row['Close']
+        volume = row['Volume']
+        print(
+            f"{fngd_symbol} - On {date}: Open: {open_price:.2f}, High: {high_price:.2f}, Low: {low_price:.2f}, Close: {close_price:.2f}, Volume: {volume}")
+
     print()
 
     filename1 = 'fngu_data.json'
