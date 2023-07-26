@@ -9,7 +9,7 @@ def download_stock_data(symbol, start_date, end_date):
     url_params = {
         'function': 'TIME_SERIES_DAILY',
         'symbol': symbol,
-        'apikey': 'API_KEY'
+        'apikey': API_KEY
     }
 
     response = requests.get(base_url, params=url_params)
@@ -67,7 +67,7 @@ stock_data = download_stock_data(symbol, start_date, end_date)
 if stock_data:
     filename = f'{symbol}_stock_data.json'
     save_data_as_json(stock_data, filename)
-    print(f"Data saved as {filename}")
+    print(f"Data saved as {filename}\n")
 else:
     print("Data download failed.")
 
