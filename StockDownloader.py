@@ -64,3 +64,4 @@ if __name__ == "__main__":
     stock_downloader1.save_data_as_json(filename1)
     stock_downloader2.save_data_as_json(filename2)
     print(f"Stock data saved as {filename1} and {filename2}")
+
