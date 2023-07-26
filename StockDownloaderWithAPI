@@ -8,6 +8,7 @@ def download_stock_data(symbol, start_date, end_date):
     base_url = 'https://www.alphavantage.co/query'
     url_params = {
         'function': 'TIME_SERIES_DAILY',
+        'outputsize': 'full',
         'symbol': symbol,
         'apikey': API_KEY
     }
@@ -57,18 +58,18 @@ def print_json_data(filename):
     except json.JSONDecodeError:
         print(f"Error decoding JSON data in '{filename}'.")
 
-# Example usage:
-symbol = input(f'Enter a ticker symbol (either FNGU or FNGD): ')
-start_date = input(f'Enter a start date (YYYY-MM-DD): ')
-end_date = input(f'Enter an end date (YYYY-MM-DD): ')
+if __name__ == "__main__":
+    symbol = input(f'Enter a ticker symbol (either FNGU or FNGD): ').upper()
+    start_date = input(f'Enter a start date (YYYY-MM-DD): ')
+    end_date = input(f'Enter an end date (YYYY-MM-DD): ')
 
-stock_data = download_stock_data(symbol, start_date, end_date)
+    stock_data = download_stock_data(symbol, start_date, end_date)
 
-if stock_data:
-    filename = f'{symbol}_stock_data.json'
-    save_data_as_json(stock_data, filename)
-    print(f"Data saved as {filename}\n")
-else:
-    print("Data download failed.")
+    if stock_data:
+        filename = f'{symbol}_stock_data.json'
+        save_data_as_json(stock_data, filename)
+        print(f"Data saved as {filename}\n")
+    else:
+        print("Data download failed.")
 
-print_json_data(f'{symbol}_stock_data.json')
+    print_json_data(f'{symbol}_stock_data.json')
