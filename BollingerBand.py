@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 
 # Load data from json file
-with open('FNGD_stock_data.json', 'r') as f:
+with open('FNGU_stock_data.json', 'r') as f:
     data = json.load(f)
 
 # Convert the data to pandas DataFrame
@@ -14,15 +14,15 @@ df = df.sort_index(ascending=True)
 # Convert the 'close' column to numeric type
 df['close'] = pd.to_numeric(df['close'])
 
-# Calculate the 5-day moving average
-df['5_day_ma'] = df['close'].rolling(window=5).mean()
+# Calculate the 20-day moving average
+df['20_day_ma'] = df['close'].rolling(window=20).mean()
 
 # Calculate the standard deviation for Bollinger Bands
-df['std'] = df['close'].rolling(window=5).std()
+df['std'] = df['close'].rolling(window=20).std()
 
 # Calculate upper and lower Bollinger Bands
-df['upper_band'] = df['5_day_ma'] + 2 * df['std']
-df['lower_band'] = df['5_day_ma'] - 2 * df['std']
+df['upper_band'] = df['20_day_ma'] + 2 * df['std']
+df['lower_band'] = df['20_day_ma'] - 2 * df['std']
 
 # Create an 'order' column to record the "buy" and "sell" signals based on Bollinger Band Bounce strategy
 df['order'] = 'N/A'
