@@ -22,11 +22,11 @@ def calculate_moving_average_signals(filename):
     df['10_day_ma'] = df['close'].rolling(window=10).mean()
 
     # Create an 'order' column to record the "buy" and "sell" signals
-    df['order'] = 'N/A'
-    # If the 5-day moving average is larger than the 10-day moving average, set order as 'buy'
-    df.loc[df['5_day_ma'] > df['10_day_ma'], 'order'] = 'buy'
-    # If the 5-day moving average is less than the 10-day moving average, set order as 'sell'
-    df.loc[df['5_day_ma'] < df['10_day_ma'], 'order'] = 'sell'
+    df['order'] = 0
+    # If the 5-day moving average is larger than the 10-day moving average, set order as '1'
+    df.loc[df['5_day_ma'] > df['10_day_ma'], 'order'] = 1
+    # If the 5-day moving average is less than the 10-day moving average, set order as '-1'
+    df.loc[df['5_day_ma'] < df['10_day_ma'], 'order'] = -1
 
     # print the DataFrame
     print(df.to_string())
