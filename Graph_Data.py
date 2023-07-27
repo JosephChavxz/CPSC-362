@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # read the JSON file
-with open('FNGD_stock_data.json') as f:
+with open('FNGU_stock_data.json') as f:
     data = json.load(f)
 
 # turn the dictionary into a DataFrame with dates as index
