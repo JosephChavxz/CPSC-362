@@ -64,7 +64,6 @@ class StockData:
         except json.JSONDecodeError:
             print(f"Error decoding JSON data in '{filename}'.")
 
-
 if __name__ == "__main__":
     symbol = input(f'Enter a ticker symbol (either FNGU or FNGD): ').upper()
     start_date = input(f'Enter a start date (YYYY-MM-DD): ')
