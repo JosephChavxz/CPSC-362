@@ -3,7 +3,7 @@ import json
 
 API_KEY = '1JA77LS8UJHMNV19'
 
-
+# fnction to download stock data from Alpha Vantage API
 def download_stock_data(symbol, start_date, end_date):
     base_url = 'https://www.alphavantage.co/query'
     url_params = {
@@ -34,12 +34,15 @@ def download_stock_data(symbol, start_date, end_date):
         print(f"Error fetching data: {response.status_code}")
         return None
 
+# function to save data as JSON
 def save_data_as_json(data, filename):
     with open(filename, 'w') as file:
         json.dump(data, file)
 
+# function to print data from JSON file
 def print_json_data(filename):
     try:
+        # open JSON file
         with open(filename, 'r') as file:
             data = json.load(file)
 
@@ -58,11 +61,13 @@ def print_json_data(filename):
     except json.JSONDecodeError:
         print(f"Error decoding JSON data in '{filename}'.")
 
+# main function to run the program from the command line 
 if __name__ == "__main__":
     symbol = input(f'Enter a ticker symbol (either FNGU or FNGD): ').upper()
     start_date = input(f'Enter a start date (YYYY-MM-DD): ')
     end_date = input(f'Enter an end date (YYYY-MM-DD): ')
 
+    # download stock data
     stock_data = download_stock_data(symbol, start_date, end_date)
 
     if stock_data:
