@@ -5,15 +5,19 @@ class StockData:
 
     API_KEY = '1JA77LS8UJHMNV19'
 
+    def __init__(self, symbol, start_date, end_date):
+        self.symbol = symbol
+        self.start_date = start_date
+        self.end_date = end_date
 
-def download_stock_data(symbol, start_date, end_date):
-    base_url = 'https://www.alphavantage.co/query'
-    url_params = {
-        'function': 'TIME_SERIES_DAILY',
-        'outputsize': 'full',
-        'symbol': symbol,
-        'apikey': API_KEY
-    }
+    def download_stock_data(self):
+        base_url = 'https://www.alphavantage.co/query'
+        url_params = {
+            'function': 'TIME_SERIES_DAILY',
+            'outputsize': 'full',
+            'symbol': self.symbol,
+            'apikey': self.API_KEY
+        }
 
         response = requests.get(base_url, params=url_params)
         if response.status_code == 200:
@@ -36,14 +40,14 @@ def download_stock_data(symbol, start_date, end_date):
             print(f"Error fetching data: {response.status_code}")
             return None
 
-def save_data_as_json(data, filename):
-    with open(filename, 'w') as file:
-        json.dump(data, file)
+    def save_data_as_json(self, data, filename):
+        with open(filename, 'w') as file:
+            json.dump(data, file)
 
-def print_json_data(filename):
-    try:
-        with open(filename, 'r') as file:
-            data = json.load(file)
+    def print_json_data(self, filename):
+        try:
+            with open(filename, 'r') as file:
+                data = json.load(file)
 
             print("Data from JSON file:")
             for date, values in data.items():
@@ -60,13 +64,15 @@ def print_json_data(filename):
         except json.JSONDecodeError:
             print(f"Error decoding JSON data in '{filename}'.")
 
-# main function to run the program from the command line 
+
 if __name__ == "__main__":
     symbol = input(f'Enter a ticker symbol (either FNGU or FNGD): ').upper()
     start_date = input(f'Enter a start date (YYYY-MM-DD): ')
     end_date = input(f'Enter an end date (YYYY-MM-DD): ')
 
-    stock_data = download_stock_data(symbol, start_date, end_date)
+    stock = StockData(symbol, start_date, end_date)
+
+    stock_data = stock.download_stock_data()
 
     if stock_data:
         filename = f'{symbol}_stock_data.json'
