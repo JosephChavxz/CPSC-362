@@ -1,5 +1,8 @@
 import requests
 import json
+from Graph_Data import plot_closing_prices
+from MovingAverage import *
+from BollingerBand import *
 
 class StockDataModel:
     API_KEY = '1JA77LS8UJHMNV19'
@@ -93,7 +96,6 @@ class StockDataController:
         symbol = self.view.get_input(f'Enter a ticker symbol (either FNGU or FNGD): ').upper()
         start_date = self.view.get_input(f'Enter a start date (YYYY-MM-DD): ')
         end_date = self.view.get_input(f'Enter an end date (YYYY-MM-DD): ')
-
         self.model.set_data(symbol, start_date, end_date)
 
         stock_data = self.model.download_stock_data()
@@ -104,9 +106,36 @@ class StockDataController:
             self.view.display_message(f"Data saved as {filename}\n")
         else:
             self.view.display_message("Data download failed.")
+            exitPrompt = input('Press enter to exit')
+            exit()
 
-        loaded_data = self.model.load_data_from_json(f'{symbol}_stock_data.json')
-        self.view.display_data(loaded_data)
+        loaded_data = self.model.load_data_from_json(filename)
+        displayPrompt = input('Display data stock data from JSON file? (Y/N): ').upper()
+        if displayPrompt == 'Y':
+            self.view.display_data(loaded_data)
+        
+        graphPrompt = input('Display graph of data? (Y/N): ').upper()
+        if graphPrompt == 'Y':
+            plot_closing_prices(filename)
+
+        print('Which of the following strategies would you like to implement?')
+        print('1. Bollinger Bounce\n2. Moving Average Crossover')
+        strategyPrompt = input('Enter 1 or 2: ')
+        if strategyPrompt == '1':
+            bollinger_bands_strategy(filename)
+        elif strategyPrompt == '2':
+            calculate_moving_average_signals(filename)
+
+        otherStrategyPrompt = input('Would you like to see the second strategy (Y/N): ').upper()
+        if strategyPrompt == '2':
+            bollinger_bands_strategy(filename)
+        elif strategyPrompt == '1':
+            calculate_moving_average_signals(filename)
+
+        finalExitPrompt = input('Press enter to exit program')
+
+
+        
 
 
 if __name__ == "__main__":

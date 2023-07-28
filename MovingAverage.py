@@ -31,5 +31,3 @@ def calculate_moving_average_signals(filename):
     # print the DataFrame
     print(df.to_string())
 
-# To use the function
-calculate_moving_average_signals('FNGU_stock_data.json')
