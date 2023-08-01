@@ -1,8 +1,100 @@
 import requests
 import json
-from Graph_Data import plot_closing_prices
-from MovingAverage import *
-from BollingerBand import *
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+
+def calculate_moving_average_signals(filename):
+    # Load data from json file
+    with open(filename, 'r') as f:
+        data = json.load(f)
+
+    # Convert the data to pandas DataFrame
+    df = pd.DataFrame(data).T
+    df.index = pd.to_datetime(df.index)
+    df = df.sort_index(ascending=True)
+
+    # Convert the 'close' column to numeric type
+    df['close'] = pd.to_numeric(df['close'])
+
+    # Calculate the 5-day moving average
+    df['5_day_ma'] = df['close'].rolling(window=5).mean()
+
+    # Calculate the 10-day moving average
+    df['10_day_ma'] = df['close'].rolling(window=10).mean()
+
+    # Create an 'order' column to record the "buy" and "sell" signals
+    df['order'] = 'N/A'
+    # If the 5-day moving average is larger than the 10-day moving average, set order as 'buy'
+    df.loc[df['5_day_ma'] > df['10_day_ma'], 'order'] = 'buy'
+    # If the 5-day moving average is less than the 10-day moving average, set order as 'sell'
+    df.loc[df['5_day_ma'] < df['10_day_ma'], 'order'] = 'sell'
+
+    # print the DataFrame
+    print(df.to_string())
+    print()
+
+def bollinger_bands_strategy(json_file_path):
+    # Load data from json file
+    with open(json_file_path, 'r') as f:
+        data = json.load(f)
+
+    # Convert the data to pandas DataFrame
+    df = pd.DataFrame(data).T
+    df.index = pd.to_datetime(df.index)
+    df = df.sort_index(ascending=True)
+
+    # Convert the 'close' column to numeric type
+    df['close'] = pd.to_numeric(df['close'])
+
+    # Calculate the 20-day moving average
+    df['20_day_ma'] = df['close'].rolling(window=20).mean()
+
+    # Calculate the standard deviation for Bollinger Bands
+    df['std'] = df['close'].rolling(window=20).std()
+
+    # Calculate upper and lower Bollinger Bands
+    df['upper_band'] = df['20_day_ma'] + 2 * df['std']
+    df['lower_band'] = df['20_day_ma'] - 2 * df['std']
+
+    # Create an 'order' column to record the "buy" and "sell" signals based on Bollinger Band Bounce strategy
+    df['order'] = 'N/A'
+    # If the closing price crosses above the upper Bollinger Band, set order as 'sell'
+    df.loc[df['close'] > df['upper_band'], 'order'] = 'sell'
+    # If the closing price crosses below the lower Bollinger Band, set order as 'buy'
+    df.loc[df['close'] < df['lower_band'], 'order'] = 'buy'
+
+    print(df.to_string())
+    print()
+
+def plot_closing_prices(json_file_path):
+    # read the JSON file
+    with open(json_file_path) as f:
+        data = json.load(f)
+
+    # turn the dictionary into a DataFrame with dates as index
+    df = pd.DataFrame.from_dict(data, orient='index')
+
+    # convert index to datetime
+    df.index = pd.to_datetime(df.index)
+
+    # convert closing prices to float
+    df['close'] = df['close'].astype(float)
+
+    # plot the data
+    plt.figure(figsize=(10,6))
+    plt.scatter(df.index, df['close'])
+    plt.xlabel('Date')
+    plt.ylabel('Closing Price')
+    plt.ylim([0, 100])
+    start, end = plt.ylim()  
+    stepsize = 5.0  
+    plt.yticks(np.arange(start, end, stepsize))
+    plt.xticks(rotation = 45)
+    plt.title('Closing Stock Prices Over Time')
+    plt.show()
+
+    print()
 
 class StockDataModel:
     API_KEY = '1JA77LS8UJHMNV19'
