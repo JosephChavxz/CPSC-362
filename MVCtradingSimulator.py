@@ -4,22 +4,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 
-def simulate_trading(df):
-    balance = 100000
-    shares_held = 0
-
-    for i, row in df.iterrows():
-        if row['order'] == 'buy' and balance > 0:
-            shares_to_buy = balance * 0.10 / row['close']
-            balance -= shares_to_buy * row['close']
-            shares_held += shares_to_buy
-        elif row['order'] == 'sell' and shares_held > 0:
-            shares_to_sell = shares_held * 0.10
-            balance += shares_to_sell * row['close']
-            shares_held -= shares_to_sell
-
-    return balance, shares_held
-
 def calculate_moving_average_signals(filename):
     # Load data from json file
     with open(filename, 'r') as f:
@@ -58,8 +42,24 @@ def calculate_moving_average_signals(filename):
         else:
             df.loc[df.index[i], 'balance'] = df.iloc[i - 1]['balance']
             df.loc[df.index[i], 'stock'] = df.iloc[i - 1]['stock']
+
     # print the DataFrame
     print(df.to_string())
+    print()
+
+    # Calculate final portfolio value
+    df['portfolio_value'] = df['balance'] + df['stock']*df['close']
+
+    # Get final portfolio value
+    final_portfolio_value = df['portfolio_value'].iloc[-1]
+
+    # Display final balance
+    print(f"Final Balance in Dollar Amount: ${final_portfolio_value:.2f}")
+
+    # Calculate the percentage gain or loss
+    percentage_change = ((final_portfolio_value - 100000) / 100000) * 100
+    print(f"Percentage Change in Balance: {percentage_change:.2f}%")
+
     print()
 
 def bollinger_bands_strategy(json_file_path):
@@ -106,8 +106,23 @@ def bollinger_bands_strategy(json_file_path):
         else:
             df.loc[df.index[i], 'balance'] = df.iloc[i - 1]['balance']
             df.loc[df.index[i], 'stock'] = df.iloc[i - 1]['stock']
-
+    
     print(df.to_string())
+    print()
+
+    # Calculate final portfolio value
+    df['portfolio_value'] = df['balance'] + df['stock']*df['close']
+
+    # Get final portfolio value
+    final_portfolio_value = df['portfolio_value'].iloc[-1]
+
+    # Display final balance
+    print(f"Final Balance in Dollar Amount: ${final_portfolio_value:.2f}")
+
+    # Calculate the percentage gain or loss
+    percentage_change = ((final_portfolio_value - 100000) / 100000) * 100
+    print(f"Percentage Change in Balance: {percentage_change:.2f}%")
+
     print()
 
 def plot_closing_prices(json_file_path):
