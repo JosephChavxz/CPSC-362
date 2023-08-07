@@ -18,8 +18,4 @@ Our trading system targets to provide:
 
 Do note, these requirements may change as we progress through the project lifecycle. You can expect multiple assignments geared towards the successful completion of this project.
 
-## Recommended Tools
-
-Although we recommend Python or JavaScript (TypeScript) for this project, you're free to choose the programming language that you're most comfortable with.
-
-Enjoy trading!
+***Enjoy trading!***
